@@ -3,19 +3,31 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
+    <style>
+        .wrapper {
+            margin-right: auto; /* 1 */
+            margin-left:  auto; /* 1 */
+
+            max-width: 960px; /* 2 */
+
+            padding-right: 10px; /* 3 */
+            padding-left:  10px; /* 3 */
+        }
+    </style>
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-
+<div class="wrapper">
     <h1>Register</h1>
-
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
         {{ form_row(registrationForm.agreeTerms) }}
+    <p><i>Heb je al een account? Log <a href="login">hier</a> in.</p></i>
 
-        <button type="submit" class="btn">Register</button>
+    <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
+</div>
 {% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -40,6 +42,48 @@ class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $isVerified = false;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $username;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $naam;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $adres;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $woonplaats;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Base::class, mappedBy="User")
+     */
+    private $bases;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Memo::class, mappedBy="User")
+     */
+    private $memos;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Factuur::class, mappedBy="User")
+     */
+    private $factuurs;
+
+    public function __construct()
+    {
+        $this->bases = new ArrayCollection();
+        $this->memos = new ArrayCollection();
+        $this->factuurs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -127,6 +171,142 @@ class User implements UserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getNaam(): ?string
+    {
+        return $this->naam;
+    }
+
+    public function setNaam(string $naam): self
+    {
+        $this->naam = $naam;
+
+        return $this;
+    }
+
+    public function getAdres(): ?string
+    {
+        return $this->adres;
+    }
+
+    public function setAdres(string $adres): self
+    {
+        $this->adres = $adres;
+
+        return $this;
+    }
+
+    public function getWoonplaats(): ?string
+    {
+        return $this->woonplaats;
+    }
+
+    public function setWoonplaats(?string $woonplaats): self
+    {
+        $this->woonplaats = $woonplaats;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Base[]
+     */
+    public function getBases(): Collection
+    {
+        return $this->bases;
+    }
+
+    public function addBasis(Base $basis): self
+    {
+        if (!$this->bases->contains($basis)) {
+            $this->bases[] = $basis;
+            $basis->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBasis(Base $basis): self
+    {
+        if ($this->bases->contains($basis)) {
+            $this->bases->removeElement($basis);
+            // set the owning side to null (unless already changed)
+            if ($basis->getUser() === $this) {
+                $basis->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Memo[]
+     */
+    public function getMemos(): Collection
+    {
+        return $this->memos;
+    }
+
+    public function addMemo(Memo $memo): self
+    {
+        if (!$this->memos->contains($memo)) {
+            $this->memos[] = $memo;
+            $memo->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMemo(Memo $memo): self
+    {
+        if ($this->memos->contains($memo)) {
+            $this->memos->removeElement($memo);
+            // set the owning side to null (unless already changed)
+            if ($memo->getUser() === $this) {
+                $memo->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Factuur[]
+     */
+    public function getFactuurs(): Collection
+    {
+        return $this->factuurs;
+    }
+
+    public function addFactuur(Factuur $factuur): self
+    {
+        if (!$this->factuurs->contains($factuur)) {
+            $this->factuurs[] = $factuur;
+            $factuur->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFactuur(Factuur $factuur): self
+    {
+        if ($this->factuurs->contains($factuur)) {
+            $this->factuurs->removeElement($factuur);
+            // set the owning side to null (unless already changed)
+            if ($factuur->getUser() === $this) {
+                $factuur->setUser(null);
+            }
+        }
 
         return $this;
     }

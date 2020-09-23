@@ -23,14 +23,13 @@
             <img src="/image/bol.png" class="navbar-brand">
         </a>
         <nav class="my-2 my-md-0 mr-md-5">
-            <a class="p-2 text-dark" href="">Home</a>
+            <a class="p-2 text-dark" href="/">Home</a>
             <a class="p-2 text-dark" href="#">Products</a>
-            <a class="p-2 text-dark" href="contact">Contact Us</a>
-
+            <a class="p-2 text-dark" href="{{ path('contact') }}">Contact Us</a>
             {% if app.user %}
-                <a class="btn btn-outline-primary" href="logout">Logout {{ app.user.username }}</a>
+                <a class="btn btn-outline-primary" href="/{{ path('app_logout') }}">Logout {{ app.user.username }}</a>
             {% else %}
-            <a class="p-2 text-dark" href="login">Login</a>
+            <a class="p-2 text-dark" href="/{{ path('app_login') }}">Login</a>
 
             <a class="btn btn-outline-primary" href="register">Sign up</a>
             {% endif %}

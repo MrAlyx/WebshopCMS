@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Memo index{% endblock %}
+
+{% block body %}
+    <style>
+        .wrapper {
+            margin-right: auto; /* 1 */
+            margin-left:  auto; /* 1 */
+
+            max-width: 960px; /* 2 */
+
+            padding-right: 10px; /* 3 */
+            padding-left:  10px; /* 3 */
+        }
+    </style>
+    <div class="wrapper">
+    <h1>Memo index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Updated_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for memo in memos %}
+            <tr>
+                <td>{{ memo.id }}</td>
+                <td>{{ memo.title }}</td>
+                <td>{{ memo.content }}</td>
+                <td>{{ memo.updatedAt ? memo.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a class="btn btn-info" href="{{ path('memo_show', {'id': memo.id}) }}">show</a>
+                    <a class="btn btn-info" href="{{ path('memo_edit', {'id': memo.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-info" href="{{ path('memo_new') }}">Create new</a>
+    </div>
+{% endblock %}

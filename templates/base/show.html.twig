@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Base{% endblock %}
+
+{% block body %}
+    <style>
+        .wrapper {
+            margin-right: auto; /* 1 */
+            margin-left:  auto; /* 1 */
+
+            max-width: 960px; /* 2 */
+
+            padding-right: 10px; /* 3 */
+            padding-left:  10px; /* 3 */
+        }
+    </style>
+    <div class="wrapper">
+    <h1>Base</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ base.id }}</td>
+            </tr>
+            <tr>
+                <th>Bedrijfsnaam</th>
+                <td>{{ base.bedrijfsnaam }}</td>
+            </tr>
+            <tr>
+                <th>Logo</th>
+                <td>{{ base.logo }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ base.updatedAt ? base.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('base_index') }}">back to list</a>
+
+    <a href="{{ path('base_edit', {'id': base.id}) }}">edit</a>
+
+    {{ include('base/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

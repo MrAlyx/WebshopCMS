@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Base{% endblock %}
+
+{% block body %}
+    <style>
+        .wrapper {
+            margin-right: auto; /* 1 */
+            margin-left:  auto; /* 1 */
+
+            max-width: 960px; /* 2 */
+
+            padding-right: 10px; /* 3 */
+            padding-left:  10px; /* 3 */
+        }
+    </style>
+    <div class="wrapper">
+    <h1>Create new Base</h1>
+
+    {{ include('base/_form.html.twig') }}
+
+    <a class="btn btn-info" href="{{ path('base_index') }}">back to list</a>
+    </div>
+{% endblock %}

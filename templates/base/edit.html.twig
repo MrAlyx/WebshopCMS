@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Base{% endblock %}
+
+{% block body %}
+    <style>
+        .wrapper {
+            margin-right: auto; /* 1 */
+            margin-left:  auto; /* 1 */
+
+            max-width: 960px; /* 2 */
+
+            padding-right: 10px; /* 3 */
+            padding-left:  10px; /* 3 */
+        }
+    </style>
+    <div class="wrapper">
+    <h1>Edit Base</h1>
+
+    {{ include('base/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-info" href="{{ path('base_index') }}">back to list</a>
+
+    {{ include('base/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

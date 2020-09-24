@@ -83,7 +83,7 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
@@ -91,4 +91,30 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user_index');
     }
+
+    /**
+     * @route("{id}/role", name="role_action", methods="GET|POST")
+     */
+
+    public function roleAction($id, UserRepository $userRepository): Response
+    {
+        $user = $userRepository->find($id);
+        $role = 'ROLE_ADMIN';
+        $roles = $user->getRoles();
+        if ($user) {
+            if (in_array($role, $roles)) {
+                unset($roles[1]);
+                $roles = array_values($roles);
+                $user->setRoles($roles);
+            } else {
+                $roles[] = strtoupper($role);
+                $user->setRoles($roles);
+            }
+            $this->getDoctrine()->getManager()->flush();
+        }
+        return $this->render('User/index.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
 }
+

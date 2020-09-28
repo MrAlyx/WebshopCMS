@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Base;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\BaseRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +20,11 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, BaseRepository $baseRepository): Response
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 
@@ -51,17 +54,18 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}", name="user_show", methods={"GET"})
      */
-    public function show(User $user): Response
+    public function show(User $user, BaseRepository $baseRepository): Response
     {
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, User $user, BaseRepository $baseRepository): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -75,6 +79,7 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 
@@ -96,7 +101,7 @@ class UserController extends AbstractController
      * @route("{id}/role", name="role_action", methods="GET|POST")
      */
 
-    public function roleAction($id, UserRepository $userRepository): Response
+    public function roleAction($id, UserRepository $userRepository, BaseRepository $baseRepository): Response
     {
         $user = $userRepository->find($id);
         $role = 'ROLE_ADMIN';
@@ -114,6 +119,7 @@ class UserController extends AbstractController
         }
         return $this->render('User/index.html.twig', [
             'users' => $userRepository->findAll(),
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 }

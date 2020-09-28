@@ -314,6 +314,6 @@ class User implements UserInterface
 
     public function __toString()
     {
-        return $this->getEmail(). "". $this->getUsername();
+        return $this->getUsername();
     }
 }

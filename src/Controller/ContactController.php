@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Base;
 use App\Form\ContactType;
+use App\Repository\BaseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +14,7 @@ class ContactController extends AbstractController
     /**
      * @Route("/contact", name="contact")
      */
-    public function contact(Request $request, \Swift_Mailer $mailer)
+    public function contact(Request $request, \Swift_Mailer $mailer, BaseRepository $baseRepository)
     {
         $form = $this->createForm(ContactType::class);
 
@@ -34,7 +36,8 @@ class ContactController extends AbstractController
         }
 
         return $this ->render('contact/index.html.twig', [
-            'our_form' => $form->createView()
+            'our_form' => $form->createView(),
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 }

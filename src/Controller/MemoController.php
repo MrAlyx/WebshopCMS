@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Memo;
 use App\Form\MemoType;
+use App\Repository\BaseRepository;
 use App\Repository\MemoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,17 +19,19 @@ class MemoController extends AbstractController
     /**
      * @Route("/", name="memo_index", methods={"GET"})
      */
-    public function index(MemoRepository $memoRepository): Response
+    public function index(MemoRepository $memoRepository, BaseRepository $baseRepository): Response
     {
         return $this->render('memo/index.html.twig', [
             'memos' => $memoRepository->findAll(),
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
+
         ]);
     }
 
     /**
      * @Route("/new", name="memo_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, BaseRepository $baseRepository): Response
     {
         $memo = new Memo();
         $memo->setUser($this->getUser());
@@ -47,23 +50,25 @@ class MemoController extends AbstractController
         return $this->render('memo/new.html.twig', [
             'memo' => $memo,
             'form' => $form->createView(),
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 
     /**
      * @Route("/{id}", name="memo_show", methods={"GET"})
      */
-    public function show(Memo $memo): Response
+    public function show(Memo $memo, BaseRepository $baseRepository): Response
     {
         return $this->render('memo/show.html.twig', [
             'memo' => $memo,
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="memo_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Memo $memo): Response
+    public function edit(Request $request, Memo $memo, BaseRepository $baseRepository): Response
     {
         $memo->setUser($this->getUser());
         $memo->setUpdatedAt(new\DateTime('now'));
@@ -79,6 +84,7 @@ class MemoController extends AbstractController
         return $this->render('memo/edit.html.twig', [
             'memo' => $memo,
             'form' => $form->createView(),
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 

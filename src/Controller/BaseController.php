@@ -22,13 +22,14 @@ class BaseController extends AbstractController
     {
         return $this->render('base/index.html.twig', [
             'bases' => $baseRepository->findAll(),
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 
     /**
      * @Route("/new", name="base_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, BaseRepository $baseRepository): Response
     {
         $base = new Base();
         $base->setUser($this->getUser());
@@ -47,23 +48,26 @@ class BaseController extends AbstractController
         return $this->render('base/new.html.twig', [
             'base' => $base,
             'form' => $form->createView(),
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 
     /**
      * @Route("/{id}", name="base_show", methods={"GET"})
      */
-    public function show(Base $base): Response
+    public function show(Base $base, BaseRepository $baseRepository): Response
     {
         return $this->render('base/show.html.twig', [
             'base' => $base,
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
+
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="base_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Base $base): Response
+    public function edit(Request $request, Base $base, BaseRepository $baseRepository): Response
     {
         $base->setUser($this->getUser());
         $base->setUpdatedAt(new \DateTime('now'));
@@ -79,6 +83,7 @@ class BaseController extends AbstractController
         return $this->render('base/edit.html.twig', [
             'base' => $base,
             'form' => $form->createView(),
+            'logo' => $baseRepository->findOneBy([],[])->getLogo(),
         ]);
     }
 
